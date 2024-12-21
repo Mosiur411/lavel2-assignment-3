@@ -23,14 +23,14 @@ const JWT_SECRET = config_1.default.jwtSecret;
 const createUserIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const result = new user_model_1.UserModel(payload);
     if (!result)
-        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Invalid User Infomation");
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Validation error");
     yield result.save();
     return result;
 });
 const loginUserIntoDB = (payload) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = payload;
     if (!email || !password)
-        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Invalid email and password !");
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Invalid credentials!");
     const user = yield user_model_1.UserModel.findOne({ email: email }).select('+password');
     if (!user)
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, `Invalid ${email} no record create !`);

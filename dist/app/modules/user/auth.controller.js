@@ -17,12 +17,13 @@ const http_status_1 = __importDefault(require("http-status"));
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const user_service_1 = require("./user.service");
+const AppError_1 = __importDefault(require("../../error/AppError"));
 ;
 const userUpdate = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.body;
     const { Id } = req.params;
     if (!data || !Id)
-        throw new Error("Invalid Body Information");
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Invalid Body Information");
     const result = yield user_service_1.UserService.updateUserIntoDB(data, Id);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.CREATED,
@@ -31,4 +32,16 @@ const userUpdate = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
         data: result
     });
 }));
-exports.userController = { userUpdate };
+const userBlockUpdate = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { Id } = req.params;
+    if (!Id)
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Invalid Body Information");
+    const result = yield user_service_1.UserService.blockUserIntoDB(Id);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.CREATED,
+        success: true,
+        message: "User blocked successfully",
+        data: result
+    });
+}));
+exports.userController = { userUpdate, userBlockUpdate };

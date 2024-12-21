@@ -16,12 +16,25 @@ exports.BlogService = void 0;
 const AppError_1 = __importDefault(require("../../error/AppError"));
 const http_status_1 = __importDefault(require("http-status"));
 const blog_model_1 = require("./blog.model");
+const QueryBuilder_1 = __importDefault(require("../../builder/QueryBuilder"));
 const createBlogIntoDB = (payload, user) => __awaiter(void 0, void 0, void 0, function* () {
     const userData = user._doc;
     payload.author = userData === null || userData === void 0 ? void 0 : userData._id;
     const result = yield blog_model_1.BlogModel.create(payload);
     if (!result)
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Invalid User Infomation");
+    return result;
+});
+const getBlogIntoDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    // blog filed 
+    const blogSearchFileds = ['title', 'content'];
+    const blogQuery = new QueryBuilder_1.default(blog_model_1.BlogModel.find(), query)
+        .search(blogSearchFileds)
+        .filter()
+        .sort()
+        .paginate()
+        .fields();
+    const result = blogQuery.modelQuery;
     return result;
 });
 const updateBlogIntoDB = (payload, Id) => __awaiter(void 0, void 0, void 0, function* () {
@@ -39,5 +52,6 @@ const deleteBlogIntoDB = (Id) => __awaiter(void 0, void 0, void 0, function* () 
 exports.BlogService = {
     createBlogIntoDB,
     updateBlogIntoDB,
-    deleteBlogIntoDB
+    deleteBlogIntoDB,
+    getBlogIntoDB
 };

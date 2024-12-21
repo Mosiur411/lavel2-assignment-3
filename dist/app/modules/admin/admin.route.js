@@ -12,6 +12,6 @@ const blog_controller_1 = require("../blog/blog.controller");
 const auth_controller_1 = require("../user/auth.controller");
 const router = express_1.default.Router();
 // route 
-router.patch('users/:userId/block', auth_1.auth.authUser, auth_1.auth.onlyAdmin, (0, validationRequest_1.default)(user_validation_1.updateUserValidationSchema), auth_controller_1.userController.userUpdate);
+router.patch('users/:userId/block', auth_1.auth.authUser, auth_1.auth.onlyAdmin, (0, validationRequest_1.default)(user_validation_1.blockUserValidationSchema), auth_controller_1.userController.userBlockUpdate);
 router.delete('blogs/:Id', auth_1.auth.authUser, auth_1.auth.onlyAdmin, blog_controller_1.blogController.blogDelete);
 exports.AdminRoute = router;

@@ -22,6 +22,12 @@ const updateUserIntoDB = (payload, Id) => __awaiter(void 0, void 0, void 0, func
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Invalid User Infomation");
     return result;
 });
+const blockUserIntoDB = (Id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_model_1.UserModel.findOneAndUpdate({ _id: Id }, { isBlocked: true }, { new: true });
+    if (!result)
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Invalid User Infomation");
+    return result;
+});
 exports.UserService = {
-    updateUserIntoDB,
+    updateUserIntoDB, blockUserIntoDB
 };

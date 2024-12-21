@@ -30,16 +30,13 @@ const blogCreate = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
         data: result
     });
 }));
-const getCreate = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const data = req.body;
-    const user = req.user;
-    if (!data)
-        throw new Error("Invalid Body Information");
-    const result = yield blog_service_1.BlogService.createBlogIntoDB(data, user);
+const getBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const query = req.query;
+    const result = yield blog_service_1.BlogService.getBlogIntoDB(query);
     (0, sendResponse_1.default)(res, {
-        statusCode: http_status_1.default.CREATED,
+        statusCode: 200,
         success: true,
-        message: "Blog created successfully",
+        message: "Blogs fetched successfully",
         data: result
     });
 }));
@@ -50,9 +47,9 @@ const blogUpdate = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
         throw new Error("Invalid Body Information");
     const result = yield blog_service_1.BlogService.updateBlogIntoDB(data, Id);
     (0, sendResponse_1.default)(res, {
-        statusCode: http_status_1.default.CREATED,
+        statusCode: 200,
         success: true,
-        message: "Blog created successfully",
+        message: "Blog updated successfully",
         data: result
     });
 }));
@@ -62,10 +59,10 @@ const blogDelete = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
         throw new Error("Invalid Body Information");
     const result = yield blog_service_1.BlogService.deleteBlogIntoDB(Id);
     (0, sendResponse_1.default)(res, {
-        statusCode: http_status_1.default.CREATED,
+        statusCode: 200,
         success: true,
-        message: "Blog created successfully",
+        message: "Blog deleted successfully",
         data: result
     });
 }));
-exports.blogController = { blogCreate, blogUpdate, blogDelete, getCreate };
+exports.blogController = { blogCreate, blogUpdate, blogDelete, getBlog };

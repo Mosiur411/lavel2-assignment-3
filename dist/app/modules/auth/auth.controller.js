@@ -17,22 +17,23 @@ const auth_service_1 = require("./auth.service");
 const sendResponse_1 = __importDefault(require("../../utils/sendResponse"));
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const http_status_1 = __importDefault(require("http-status"));
+const AppError_1 = __importDefault(require("../../error/AppError"));
 const userCreaetAccount = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.body;
     if (!data)
-        throw new Error("Invalid Body Information");
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Validation error");
     const result = yield auth_service_1.AuthService.createUserIntoDB(data);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.CREATED,
         success: true,
-        message: "create user success",
+        message: "User registered successfully",
         data: result
     });
 }));
 const userLogin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.body;
     if (!data)
-        throw new Error("Invalid Body Information");
+        throw new AppError_1.default(http_status_1.default.FOUND, "Invalid credentials");
     const result = yield auth_service_1.AuthService.loginUserIntoDB(data);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.CREATED,
