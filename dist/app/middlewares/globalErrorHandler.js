@@ -13,7 +13,7 @@ const config_1 = __importDefault(require("../config"));
 const globalErrorHandler = (err, req, res, next) => {
     let statusCode = 500;
     let message = 'Something went wrong!';
-    let errorSources = [
+    let error = [
         {
             path: '',
             message: 'Something went wrong',
@@ -23,24 +23,24 @@ const globalErrorHandler = (err, req, res, next) => {
         const simplifiedError = (0, handelZodError_1.default)(err);
         statusCode = (simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.statusCode) || http_status_1.default.BAD_REQUEST;
         message = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.message;
-        errorSources = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorSources;
+        error = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorSources;
     }
     else if ((err === null || err === void 0 ? void 0 : err.name) === 'ValidationError') {
         const simplifiedError = (0, handleValidationError_1.default)(err);
         statusCode = (simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.statusCode) || http_status_1.default.UNPROCESSABLE_ENTITY;
         message = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.message;
-        errorSources = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorSources;
+        error = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorSources;
     }
     else if ((err === null || err === void 0 ? void 0 : err.code) === 11000) {
         const simplifiedError = (0, handleDuplicateError_1.default)(err);
         statusCode = (simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.statusCode) || http_status_1.default.CONFLICT;
         message = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.message;
-        errorSources = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorSources;
+        error = simplifiedError === null || simplifiedError === void 0 ? void 0 : simplifiedError.errorSources;
     }
     else if (err instanceof AppError_1.default) {
         statusCode = err.statusCode || http_status_1.default.BAD_REQUEST;
         message = err === null || err === void 0 ? void 0 : err.message;
-        errorSources = [
+        error = [
             {
                 path: '',
                 message: err === null || err === void 0 ? void 0 : err.message,
@@ -49,7 +49,7 @@ const globalErrorHandler = (err, req, res, next) => {
     }
     else if (err instanceof Error) {
         message = err.message;
-        errorSources = [
+        error = [
             {
                 path: '',
                 message: err === null || err === void 0 ? void 0 : err.message,
@@ -60,8 +60,7 @@ const globalErrorHandler = (err, req, res, next) => {
         success: false,
         statusCode,
         message,
-        errorSources,
-        err,
+        error,
         stack: config_1.default.NodeDev === 'development' ? err === null || err === void 0 ? void 0 : err.stack : null,
     });
 };

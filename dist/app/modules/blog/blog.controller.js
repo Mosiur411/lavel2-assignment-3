@@ -32,7 +32,8 @@ const blogCreate = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
 }));
 const getBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const query = req.query;
-    const result = yield blog_service_1.BlogService.getBlogIntoDB(query);
+    const user = req.user;
+    const result = yield blog_service_1.BlogService.getBlogIntoDB(query, user);
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
         success: true,
@@ -43,9 +44,10 @@ const getBlog = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0
 const blogUpdate = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.body;
     const { Id } = req.params;
+    const user = req.user;
     if (!data || !Id)
         throw new Error("Invalid Body Information");
-    const result = yield blog_service_1.BlogService.updateBlogIntoDB(data, Id);
+    const result = yield blog_service_1.BlogService.updateBlogIntoDB(data, Id, user);
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
         success: true,
@@ -55,9 +57,10 @@ const blogUpdate = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
 }));
 const blogDelete = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { Id } = req.params;
-    if (!Id)
+    const user = req.user;
+    if (!Id || !user)
         throw new Error("Invalid Body Information");
-    const result = yield blog_service_1.BlogService.deleteBlogIntoDB(Id);
+    const result = yield blog_service_1.BlogService.deleteBlogIntoDB(Id, user);
     (0, sendResponse_1.default)(res, {
         statusCode: 200,
         success: true,

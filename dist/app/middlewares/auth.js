@@ -30,7 +30,8 @@ const authUser = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0,
     next();
 }));
 const onlyAdmin = (0, catchAsync_1.default)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = req.user;
+    var _a;
+    const user = (_a = req.user) === null || _a === void 0 ? void 0 : _a._doc;
     if (!user || !user.role) {
         throw new Error("Access denied. No token provided or invalid format.");
     }

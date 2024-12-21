@@ -33,10 +33,10 @@ const userUpdate = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
     });
 }));
 const userBlockUpdate = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { Id } = req.params;
-    if (!Id)
+    const { userId } = req.params;
+    if (!userId)
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Invalid Body Information");
-    const result = yield user_service_1.UserService.blockUserIntoDB(Id);
+    const result = yield user_service_1.UserService.blockUserIntoDB(userId);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.CREATED,
         success: true,

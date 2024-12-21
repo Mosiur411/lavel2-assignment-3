@@ -23,28 +23,51 @@ const createBlogIntoDB = (payload, user) => __awaiter(void 0, void 0, void 0, fu
     const result = yield blog_model_1.BlogModel.create(payload);
     if (!result)
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Invalid User Infomation");
-    return result;
+    const populatedResult = yield result.populate('author');
+    return populatedResult;
 });
-const getBlogIntoDB = (query) => __awaiter(void 0, void 0, void 0, function* () {
+const getBlogIntoDB = (query, user) => __awaiter(void 0, void 0, void 0, function* () {
     // blog filed 
+    let filter = {};
+    const { _id, role } = user._doc;
+    if (role === 'admin') {
+        filter = {};
+    }
+    else {
+        filter = { author: _id };
+    }
     const blogSearchFileds = ['title', 'content'];
-    const blogQuery = new QueryBuilder_1.default(blog_model_1.BlogModel.find(), query)
+    const blogQuery = new QueryBuilder_1.default(blog_model_1.BlogModel.find(filter), query)
         .search(blogSearchFileds)
         .filter()
-        .sort()
-        .paginate()
-        .fields();
-    const result = blogQuery.modelQuery;
+        .sort();
+    const result = blogQuery.modelQuery.populate('author');
     return result;
 });
-const updateBlogIntoDB = (payload, Id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield blog_model_1.BlogModel.findOneAndUpdate({ _id: Id }, payload, { new: true });
+const updateBlogIntoDB = (payload, Id, user) => __awaiter(void 0, void 0, void 0, function* () {
+    let filter = {};
+    const { _id, role } = user._doc;
+    if (role === 'admin') {
+        filter = { _id: Id };
+    }
+    else {
+        filter = { _id: Id, author: _id };
+    }
+    const result = yield blog_model_1.BlogModel.findOneAndUpdate(filter, payload, { new: true });
     if (!result)
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Invalid User Infomation");
     return result;
 });
-const deleteBlogIntoDB = (Id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield blog_model_1.BlogModel.deleteOne({ _id: Id });
+const deleteBlogIntoDB = (Id, user) => __awaiter(void 0, void 0, void 0, function* () {
+    let filter = {};
+    const { _id, role } = user._doc;
+    if (role === 'admin') {
+        filter = { _id: Id };
+    }
+    else {
+        filter = { _id: Id, author: _id };
+    }
+    const result = yield blog_model_1.BlogModel.deleteOne(filter);
     if (!result)
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, "Invalid Delete Infomation");
     return result;
