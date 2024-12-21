@@ -70,14 +70,15 @@ The purpose of this assignment is to build a backend system for a blogging platf
 3. yarn add -D express
 4. yarn add -D @types/mongoose
 5. yarn add -D ts-node-dev
-
+## Admin login crediential
+  Email: admin1@gmail.com
+  password:  Adminecurepassword1
 ## Hosting: 
 **My server site hosting use vercel**
 
 ## Seen my server site provide infomation
 1. **GitHub Link: https://github.com/Mosiur411/lavel2-assignment-3**
 2. **Live Link : https://lavel2-assignment-3.vercel.app/**
-3. **API Chack Postman Link :https://grey-sunset-799900.postman.co/workspace/ede93167-73e8-4ada-b4ed-c2b076d4a612/overview**
-3. **Explanation My Porject Video Link:https://drive.google.com/file/d/1m-RqgSBWc8hxBsibafi2cmfyK4F8-Lrm/view?usp=sharing**
+3. **Explanation My Porject Video Link: https://www.veed.io/view/6ed3d1d4-9b20-472b-a146-4fdb96200201?panel=share**
 
 
