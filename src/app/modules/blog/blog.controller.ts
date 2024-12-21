@@ -2,11 +2,6 @@ import httpStatus from "http-status";
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import { BlogService } from "./blog.service";
-import QueryBuilder from "../../builder/QueryBuilder";
-import { UserModel } from "../user/user.model";
-
-
-
 const blogCreate = catchAsync(async (req, res) => {
     const data = req.body;
     const user = req.user
@@ -23,7 +18,8 @@ const blogCreate = catchAsync(async (req, res) => {
 })
 const getBlog = catchAsync(async (req, res) => {
     const query = req.query
-    const result = await BlogService.getBlogIntoDB(query)
+    const user = req.user;
+    const result = await BlogService.getBlogIntoDB(query, user)
     sendResponse(res, {
         statusCode: 200,
         success: true,
@@ -31,14 +27,13 @@ const getBlog = catchAsync(async (req, res) => {
         data: result
     })
 
-
-
 })
 const blogUpdate = catchAsync(async (req, res) => {
     const data = req.body;
     const { Id } = req.params;
+    const user = req.user
     if (!data || !Id) throw new Error("Invalid Body Information")
-    const result = await BlogService.updateBlogIntoDB(data, Id)
+    const result = await BlogService.updateBlogIntoDB(data, Id, user)
     sendResponse(res, {
         statusCode: 200,
         success: true,
@@ -49,8 +44,9 @@ const blogUpdate = catchAsync(async (req, res) => {
 })
 const blogDelete = catchAsync(async (req, res) => {
     const { Id } = req.params;
-    if (!Id) throw new Error("Invalid Body Information")
-    const result = await BlogService.deleteBlogIntoDB(Id)
+    const user = req.user
+    if (!Id || !user) throw new Error("Invalid Body Information")
+    const result = await BlogService.deleteBlogIntoDB(Id, user)
     sendResponse(res, {
         statusCode: 200,
         success: true,

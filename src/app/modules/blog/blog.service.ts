@@ -10,29 +10,52 @@ const createBlogIntoDB = async (payload: TBlog, user: JwtPayload) => {
     payload.author = userData?._id;
     const result = await BlogModel.create(payload)
     if (!result) throw new AppError(httpStatus.NOT_FOUND, "Invalid User Infomation")
-    return result;
+    const populatedResult = await result.populate('author');
+
+    return populatedResult;
 }
-const getBlogIntoDB = async (query: Record<string, unknown>) => {
+const getBlogIntoDB = async (query: Record<string, unknown>, user: JwtPayload) => {
     // blog filed 
+    let filter = {}
+    const { _id, role } = user._doc;
+    if (role === 'admin') {
+        filter = {}
+    } else {
+        filter = { author: _id }
+    }
     const blogSearchFileds = ['title', 'content']
-    const blogQuery = new QueryBuilder(BlogModel.find(), query)
+    const blogQuery = new QueryBuilder(BlogModel.find(filter), query)
         .search(blogSearchFileds)
         .filter()
         .sort()
-        .paginate()
-        .fields();
-    const result = blogQuery.modelQuery
+    const result = blogQuery.modelQuery.populate('author')
     return result;
 }
 
-const updateBlogIntoDB = async (payload: Partial<TBlog>, Id: string) => {
-    const result = await BlogModel.findOneAndUpdate({ _id: Id }, payload, { new: true });
+const updateBlogIntoDB = async (payload: Partial<TBlog>, Id: string, user: JwtPayload) => {
+    let filter = {}
+    const { _id, role } = user._doc;
+    if (role === 'admin') {
+        filter = { _id: Id }
+    } else {
+        filter = { _id: Id, author: _id }
+    }
+    const result = await BlogModel.findOneAndUpdate(filter, payload, { new: true });
     if (!result) throw new AppError(httpStatus.NOT_FOUND, "Invalid User Infomation")
     return result;
 }
 
-const deleteBlogIntoDB = async (Id: string) => {
-    const result = await BlogModel.deleteOne({ _id: Id });
+const deleteBlogIntoDB = async (Id: string, user: JwtPayload) => {
+    let filter = {}
+    const { _id, role } = user._doc;
+    if (role === 'admin') {
+        filter = { _id: Id }
+    } else {
+        filter = { _id: Id, author:_id }
+    }
+
+
+    const result = await BlogModel.deleteOne(filter);
     if (!result) throw new AppError(httpStatus.NOT_FOUND, "Invalid Delete Infomation")
     return result;
 }

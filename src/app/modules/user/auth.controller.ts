@@ -20,9 +20,9 @@ const userUpdate = catchAsync(async (req, res) => {
 
 })
 const userBlockUpdate = catchAsync(async (req, res) => {
-    const { Id } = req.params;
-    if (!Id) throw new AppError(httpStatus.NOT_FOUND, "Invalid Body Information")
-    const result = await UserService.blockUserIntoDB(Id)
+    const { userId } = req.params;
+    if (!userId) throw new AppError(httpStatus.NOT_FOUND, "Invalid Body Information")
+    const result = await UserService.blockUserIntoDB(userId)
     sendResponse(res, {
         statusCode: httpStatus.CREATED,
         success: true,

@@ -11,7 +11,7 @@ import config from "../config";
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     let statusCode = 500;
     let message = 'Something went wrong!';
-    let errorSources: TErrorSources = [
+    let error: TErrorSources = [
         {
             path: '',
             message: 'Something went wrong',
@@ -21,21 +21,21 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         const simplifiedError = handleZodError(err);
         statusCode = simplifiedError?.statusCode || httpStatus.BAD_REQUEST;
         message = simplifiedError?.message;
-        errorSources = simplifiedError?.errorSources;
+        error = simplifiedError?.errorSources;
     } else if (err?.name === 'ValidationError') {
         const simplifiedError = handleValidationError(err);
         statusCode = simplifiedError?.statusCode || httpStatus.UNPROCESSABLE_ENTITY;
         message = simplifiedError?.message;
-        errorSources = simplifiedError?.errorSources;
+        error = simplifiedError?.errorSources;
     } else if (err?.code === 11000) {
         const simplifiedError = handleDuplicateError(err);
         statusCode = simplifiedError?.statusCode || httpStatus.CONFLICT;
         message = simplifiedError?.message;
-        errorSources = simplifiedError?.errorSources;
+        error = simplifiedError?.errorSources;
     } else if (err instanceof AppError) {
         statusCode = err.statusCode || httpStatus.BAD_REQUEST;
         message = err?.message;
-        errorSources = [
+        error = [
             {
                 path: '',
                 message: err?.message,
@@ -43,7 +43,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         ];
     } else if (err instanceof Error) {
         message = err.message;
-        errorSources = [
+        error = [
             {
                 path: '',
                 message: err?.message,
@@ -54,8 +54,7 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
         success: false,
         statusCode,
         message,
-        errorSources,
-        err,
+        error,
         stack: config.NodeDev === 'development' ? err?.stack : null,
     });
 
