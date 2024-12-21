@@ -9,9 +9,6 @@ dotenv_1.default.config({ path: path_1.default.join((process.cwd(), '.env')) });
 exports.default = {
     port: process.env.PORT || 3000,
     database: process.env.DATABASE_URL,
-    webEmail: process.env.WEB_EMAIL,
-    webEmailPass: process.env.WEB_EMAIL_PASS,
-    webEmailHost: process.env.WEM_HOST,
     NodeDev: process.env.NODE_DEV,
     bcryptSalt: process.env.BCRYPT_SALT_ROUNDS,
     jwtSecret: process.env.JWT_SECRET,
