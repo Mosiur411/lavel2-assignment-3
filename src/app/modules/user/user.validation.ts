@@ -52,3 +52,10 @@ export const updateUserValidationSchema = z.object(
         })
     }
 )
+export const blockUserValidationSchema = z.object(
+    {
+        body: z.object({
+            isBlocked: z.boolean().default(false)
+        })
+    }
+)

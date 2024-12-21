@@ -19,7 +19,7 @@ const userCreaetAccount = catchAsync(async (req, res) => {
 
 const userLogin = catchAsync(async (req, res) => {
     const data = req.body;
-    if (!data) throw new Error("Invalid Body Information")
+    if (!data) throw new AppError(httpStatus.FOUND,"Invalid credentials")
     const result = await AuthService.loginUserIntoDB(data)
     sendResponse(res, {
         statusCode: httpStatus.CREATED,

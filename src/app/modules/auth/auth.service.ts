@@ -16,7 +16,8 @@ const createUserIntoDB = async (payload: TUser) => {
 }
 const loginUserIntoDB = async (payload: TLogin) => {
     const { email, password } = payload;
-    if (!email || !password) throw new AppError(httpStatus.NOT_FOUND, "Invalid email and password !")
+    if (!email || !password) throw new AppError(httpStatus.NOT_FOUND, "Invalid credentials!")
+    
     const user = await UserModel.findOne({ email: email }).select('+password')
     if (!user) throw new AppError(httpStatus.NOT_FOUND, `Invalid ${email} no record create !`)
     const isDeleted = user?.isBlocked;
