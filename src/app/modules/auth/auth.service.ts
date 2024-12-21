@@ -10,7 +10,7 @@ const JWT_SECRET = config.jwtSecret as string
 
 const createUserIntoDB = async (payload: TUser) => {
     const result = new UserModel(payload)
-    if (!result) throw new AppError(httpStatus.NOT_FOUND, "Invalid User Infomation")
+    if (!result) throw new AppError(httpStatus.NOT_FOUND, "Validation error")
     await result.save()
     return result;
 }

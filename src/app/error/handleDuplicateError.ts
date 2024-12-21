@@ -17,7 +17,7 @@ const handleDuplicateError = (err: any): TGenericErrorResponse => {
 
     return {
         statusCode,
-        message: 'Invalid ID',
+        message: 'Validation error',
         errorSources,
     };
 };

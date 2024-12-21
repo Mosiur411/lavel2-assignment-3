@@ -2,15 +2,16 @@ import { AuthService } from "./auth.service";
 import sendResponse from "../../utils/sendResponse";
 import catchAsync from "../../utils/catchAsync";
 import httpStatus from 'http-status'
+import AppError from "../../error/AppError";
 
 const userCreaetAccount = catchAsync(async (req, res) => {
     const data = req.body;
-    if (!data) throw new Error("Invalid Body Information")
+    if (!data) throw new AppError(httpStatus.NOT_FOUND, "Validation error")
     const result = await AuthService.createUserIntoDB(data)
     sendResponse(res, {
         statusCode: httpStatus.CREATED,
         success: true,
-        message: "create user success",
+        message: "User registered successfully",
         data: result
     })
 
