@@ -5,11 +5,8 @@ const zod_1 = require("zod");
 exports.createUserValidationSchema = zod_1.z.object({
     body: zod_1.z.object({
         name: zod_1.z.string().min(2, { message: "Must be 5 or more characters long" }).max(20, { message: 'Must be 20 or end charactes long' }),
-        email: zod_1.z.string().email({ message: "Invalid email address" }).refine((email) => email.endsWith("@gmail.com"), { message: "Email must be from the domain '@gmail.com'" }),
-        password: zod_1.z.string().min(8, { message: "Password must be at least 8 characters long" })
-            .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, {
-            message: "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
-        }),
+        email: zod_1.z.string().email({ message: "Invalid email address" }),
+        password: zod_1.z.string().min(8, { message: "Password must be at least 8 characters long" }),
         role: zod_1.z
             .enum(["admin", "user"], {
             errorMap: () => ({
@@ -22,11 +19,8 @@ exports.createUserValidationSchema = zod_1.z.object({
 exports.updateUserValidationSchema = zod_1.z.object({
     body: zod_1.z.object({
         name: zod_1.z.string().min(2, { message: "Must be 5 or more characters long" }).max(20, { message: 'Must be 20 or end charactes long' }).optional(),
-        email: zod_1.z.string().email({ message: "Invalid email address" }).refine((email) => email.endsWith("@gmail.com"), { message: "Email must be from the domain '@gmail.com'" }).optional(),
-        password: zod_1.z.string().min(8, { message: "Password must be at least 8 characters long" })
-            .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/, {
-            message: "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
-        }).optional(),
+        email: zod_1.z.string().email({ message: "Invalid email address" }).optional(),
+        password: zod_1.z.string().min(8, { message: "Password must be at least 8 characters long" }).optional(),
         role: zod_1.z
             .enum(["admin", "user"], {
             errorMap: () => ({

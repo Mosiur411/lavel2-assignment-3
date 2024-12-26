@@ -71,8 +71,8 @@ The purpose of this assignment is to build a backend system for a blogging platf
 4. yarn add -D @types/mongoose
 5. yarn add -D ts-node-dev
 ## Admin login crediential
-  Email: admin1@gmail.com
-  password:  Adminecurepassword1
+  Email: admin@gmail.com
+  password:  adminpassword
 ## Hosting: 
 **My server site hosting use vercel**
 
